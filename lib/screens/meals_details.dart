@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:meals_self/models/meals.dart';
 
 class MealsDetails extends StatelessWidget {
-  const MealsDetails({super.key, required this.meal});
+  const MealsDetails(
+      {super.key, required this.meal, required this.onToggleFavouriteMeal});
+
+  final void Function(Meal meal) onToggleFavouriteMeal;
 
   final Meal meal;
 
@@ -11,6 +14,14 @@ class MealsDetails extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
+        actions: [
+          IconButton(
+            onPressed: () {
+              onToggleFavouriteMeal(meal);
+            },
+            icon: const Icon(Icons.star),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
