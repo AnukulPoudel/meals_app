@@ -30,4 +30,9 @@ class FavouriteMealsNotifier extends StateNotifier<List<Meal>> {
 }
 
 // used for dynamic datas that keeps changing
-final favouriteMealsProvider = StateNotifierProvider();
+// returns an instance of our FavouriteMealsNotifier class
+final favouriteMealsProvider = StateNotifierProvider<FavouriteMealsNotifier, List<Meal>>((ref) {
+  // StateNotifierProvider is a generic type so it does not which data
+  //  this favouriteMealsNotifier will yield in the end so <>, adding this to get better type support for rest of app
+  return FavouriteMealsNotifier();
+});
