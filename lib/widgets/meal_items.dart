@@ -5,10 +5,12 @@ import 'package:meals_self/widgets/meal_item.dart';
 
 class Meals extends StatelessWidget {
   const Meals(
-      {super.key, required this.meals, required this.onToggleFavouriteMeal});
+      {super.key, required this.meals, 
+      // required this.onToggleFavouriteMeal
+      });
 
   final List<Meal> meals;
-  final Function(Meal meal) onToggleFavouriteMeal;
+  // final Function(Meal meal) onToggleFavouriteMeal;
 
   void selectMeal(ctx, Meal meal) {
     Navigator.push(
@@ -16,7 +18,7 @@ class Meals extends StatelessWidget {
         MaterialPageRoute(
             builder: (context) => MealsDetails(
                   meal: meal,
-                  onToggleFavouriteMeal: onToggleFavouriteMeal,
+                  // onToggleFavouriteMeal: onToggleFavouriteMeal,
                 )));
   }
 

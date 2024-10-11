@@ -7,18 +7,19 @@ class MealsScreen extends StatelessWidget {
       {super.key,
       this.title,
       required this.dummyMeals,
-      required this.onToggleFavouriteMeal});
+      // required this.onToggleFavouriteMeal
+      });
 
   final String? title;
   final List<Meal> dummyMeals;
-  final void Function(Meal meal) onToggleFavouriteMeal;
+  // final void Function(Meal meal) onToggleFavouriteMeal;
 
   @override
   Widget build(BuildContext context) {
     if (title == null) {
       return Meals(
         meals: dummyMeals,
-        onToggleFavouriteMeal: onToggleFavouriteMeal,
+        // onToggleFavouriteMeal: onToggleFavouriteMeal,
       );
     }
 
@@ -28,7 +29,7 @@ class MealsScreen extends StatelessWidget {
       ),
       body: Meals(
         meals: dummyMeals,
-        onToggleFavouriteMeal: onToggleFavouriteMeal,
+        // onToggleFavouriteMeal: onToggleFavouriteMeal,
       ),
     );
   }

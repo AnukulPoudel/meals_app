@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 // import 'package:meals_self/data/dummy_data.dart';
-import 'package:meals_self/models/meals.dart';
+// import 'package:meals_self/models/meals.dart';
 import 'package:meals_self/screens/categories.dart';
 import 'package:meals_self/screens/filters.dart';
 import 'package:meals_self/screens/meals.dart';
 import 'package:meals_self/widgets/main_drawer.dart';
 import 'package:meals_self/providers/meals_provider.dart';
+import 'package:meals_self/providers/favourite_meals_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 const kInitialFilters = {
@@ -27,32 +28,33 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
   Map<Filter, bool> _selectedFilters = kInitialFilters;
 
-  void _showInfoMessage(String message) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 4),
-        content: Text(message),
-      ),
-    );
-  }
+  // void _showInfoMessage(String message) {
+  //   ScaffoldMessenger.of(context).clearSnackBars();
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       duration: const Duration(seconds: 4),
+  //       content: Text(message),
+  //     ),
+  //   );
+  // }
 
-  final List<Meal> _favouriteMeals = [];
+// we can get rid of these code as we are manaing these things using provider in favourite...providres
+  // final List<Meal> _favouriteMeals = [];
 
-  void toggleFavouriteMealStatus(Meal meal) {
-    final bool containsMeal = _favouriteMeals.contains(meal);
-    if (containsMeal) {
-      setState(() {
-        _favouriteMeals.remove(meal);
-      });
-      _showInfoMessage("Meal is no longer a favourite");
-    } else {
-      setState(() {
-        _favouriteMeals.add(meal);
-      });
-      _showInfoMessage("Meal is selected as a favourite");
-    }
-  }
+  // void toggleFavouriteMealStatus(Meal meal) {
+  //   final bool containsMeal = _favouriteMeals.contains(meal);
+  //   if (containsMeal) {
+  //     setState(() {
+  //       _favouriteMeals.remove(meal);
+  //     });
+  //     _showInfoMessage("Meal is no longer a favourite");
+  //   } else {
+  //     setState(() {
+  //       _favouriteMeals.add(meal);
+  //     });
+  //     _showInfoMessage("Meal is selected as a favourite");
+  //   }
+  // }
 
   void _selectPage(int index) {
     setState(() {
@@ -76,6 +78,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // .watch and . read but use watch often
     final meals = ref.watch(mealsProvider);
     final availableMeals = meals.where((meal) {
       if (_selectedFilters[Filter.glutenFree]! && !meal.isGlutenFree) {
@@ -93,14 +96,15 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       return true;
     }).toList();
     Widget currentState = CategoriesScreen(
-      onToggleFavouriteMeal: toggleFavouriteMealStatus,
+      // onToggleFavouriteMeal: toggleFavouriteMealStatus,
       availableMeals: availableMeals,
     );
     var activePageTitle = 'Categories';
     if (_selectedPageIndex == 1) {
+      final favouriteMeals = ref.watch(favouriteMealsProvider);
       currentState = MealsScreen(
-        dummyMeals: _favouriteMeals,
-        onToggleFavouriteMeal: toggleFavouriteMealStatus,
+        dummyMeals: favouriteMeals,
+        // onToggleFavouriteMeal: toggleFavouriteMealStatus,
       );
       activePageTitle = 'Your Favourites';
     }

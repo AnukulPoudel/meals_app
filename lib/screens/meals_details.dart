@@ -1,23 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:meals_self/models/meals.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/favourite_meals_provider.dart';
 
-class MealsDetails extends StatelessWidget {
-  const MealsDetails(
-      {super.key, required this.meal, required this.onToggleFavouriteMeal});
+class MealsDetails extends ConsumerWidget {
+  const MealsDetails({
+    super.key,
+    required this.meal,
+    // required this.onToggleFavouriteMeal
+  });
 
-  final void Function(Meal meal) onToggleFavouriteMeal;
+  // final void Function(Meal meal) onToggleFavouriteMeal;
 
   final Meal meal;
 
   @override
-  Widget build(BuildContext context) {
+  // This is a stateless wid so we need to pass the fun parameter manually its not globally aailable
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
         actions: [
           IconButton(
             onPressed: () {
-              onToggleFavouriteMeal(meal);
+              // onToggleFavouriteMeal(meal);
+              // here we should not use .watch. in functions like onPressed we should use .read not .watch
+              final wasAdded = ref
+                  .read(favouriteMealsProvider.notifier)
+                  .toggleMealFavouriteStatus(meal);
+              // since favouriteMealsProvider is a stateNotifier we can access the value using . notifier
+              // which gives us access to the notifier class inside favourite..provider
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  duration: const Duration(seconds: 4),
+                  content: Text(wasAdded
+                      ? 'Meal added as a favourite'
+                      : 'Meal removed as a favourite'),
+                ),
+              );
             },
             icon: const Icon(Icons.star),
           )

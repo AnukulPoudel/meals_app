@@ -9,7 +9,8 @@ class FavouriteMealsNotifier extends StateNotifier<List<Meal>> {
   FavouriteMealsNotifier()
       : super([]); // super to reach to our parent class -> StateNotifier()
   // and all the necessary methods to update those values inside list
-  void toggleMealFavouriteStatus(Meal meal) {
+  bool toggleMealFavouriteStatus(Meal meal) {
+    // return bool to find out weather it was added or not
     // .contains checks if state list is same as meal
     final mealIsFavourite = state.contains(meal);
 
@@ -17,21 +18,23 @@ class FavouriteMealsNotifier extends StateNotifier<List<Meal>> {
     if (mealIsFavourite) {
       // .where gives us a new list
       state = state.where((m) => m.id != meal.id).toList();
+      return false;
     }
     // adding a meal
     else {
       // spead operator ...,  pull out all the elements from that state list and add new meal using ,
       state = [...state, meal];
+      return true;
     }
     // globally available state property, we cannot add or remove values form list like in
     // notmal cases so we must always create a new one
-    state = []; // creating a new one
   }
 }
 
 // used for dynamic datas that keeps changing
 // returns an instance of our FavouriteMealsNotifier class
-final favouriteMealsProvider = StateNotifierProvider<FavouriteMealsNotifier, List<Meal>>((ref) {
+final favouriteMealsProvider =
+    StateNotifierProvider<FavouriteMealsNotifier, List<Meal>>((ref) {
   // StateNotifierProvider is a generic type so it does not which data
   //  this favouriteMealsNotifier will yield in the end so <>, adding this to get better type support for rest of app
   return FavouriteMealsNotifier();

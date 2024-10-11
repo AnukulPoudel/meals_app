@@ -14,6 +14,8 @@ final theme = ThemeData(
 
 void main() {
   runApp(
+    // we must wrap this app class with providerScope widget to use provider or else it will throw error
+    // if we knie what nested part of app we need to use provider then we can wrap that widget with providerscope
     const ProviderScope(
       child: App(),
     ),
